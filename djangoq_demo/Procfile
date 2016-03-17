@@ -1,0 +1,2 @@
+web: gunicorn djangoq_demo.wsgi --log-file -
+worker: python manage.py qcluster

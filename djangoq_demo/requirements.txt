@@ -3,3 +3,9 @@ django-q >= 0.7, < 0.8
 ipython >= 4, < 5
 psutil
 pytz
+gunicorn
+dj-database-url
+psycopg2==2.6.1
+whitenoise==2.0.6
+redis
+xlrd

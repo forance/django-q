@@ -11,34 +11,34 @@ logger = logging.getLogger(__name__)
 
 
 
-from django_q.tasks import schedule
+# from django_q.tasks import schedule
 
-schedule('fruit_shop.tasks.order_fruit',
-         2, -2,
-         # hook='fruit_shop.hooks.send_result',
-         schedule_type='I')
+# schedule('fruit_shop.tasks.order_fruit',
+#          2, -2,
+#          # hook='fruit_shop.hooks.send_result',
+#          schedule_type='I')
 
 
 
 def home(request):
-    # if request.method == 'POST':
-        # Parse the form params
-        # try:
-            # fruit = request.POST.get('fruit_type', '')
-            # num_fruit = int(request.POST.get('num_fruit', '1'))
-        # except ValueError:
-            # return HttpResponseBadRequest('Invalid fruit request!')
-        # Create async task
-        # task_id = async(
-        #     'fruit_shop.tasks.order_fruit',
-        #     fruit=fruit, num_fruit=num_fruit,
-        #     hook='fruit_shop.hooks.send_result'
-        # )
-        # messages.info(
-        #     request,
-        #     'You ordered {fruit:s} x {num_fruit:d} (task: {task})'
-        #     .format(fruit=fruit, num_fruit=num_fruit, task=humanize(task_id))
-        # )
+    if request.method == 'POST':
+        #Parse the form params
+        try:
+            fruit = request.POST.get('fruit_type', '')
+            num_fruit = int(request.POST.get('num_fruit', '1'))
+        except ValueError:
+            return HttpResponseBadRequest('Invalid fruit request!')
+        #Create async task
+        task_id = async(
+            'fruit_shop.tasks.order_fruit',
+            # fruit=fruit, num_fruit=num_fruit,
+            # hook='fruit_shop.hooks.send_result'
+        )
+        messages.info(
+            request,
+            'You ordered {fruit:s} x {num_fruit:d} (task: {task})'
+            .format(fruit=fruit, num_fruit=num_fruit, task=humanize(task_id))
+        )
 
     # Select orders in queue
     queue_orders = OrmQ.objects.all().order_by('lock')

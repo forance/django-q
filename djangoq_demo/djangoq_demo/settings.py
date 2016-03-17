@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-from os.path import abspath, dirname, join
+# from os.path import abspath, dirname, join
 
 # Build paths inside the project like this: join(BASE_DIR, ...)
-BASE_DIR = dirname(dirname(abspath(__file__)))
+# BASE_DIR = dirname(dirname(abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,9 +26,12 @@ SECRET_KEY = 'vqac7!7z)93t+b4afet#-tbkjji!=6=i+lqm%94i32t!*646ml'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
-ALLOWED_HOSTS = []
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
 
+SITE_ID = 1 
 
 
 
@@ -42,7 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'django_q',
+    'fruit_shop',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -86,12 +92,23 @@ WSGI_APPLICATION = 'djangoq_demo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
+
+
+##### Heroku setting  ####
+# Parse database configuration from $DATABASE_URL
+
+if DEBUG:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': join(BASE_DIR, 'db.sqlite3'),
     }
 }
+else:
+
+    import dj_database_url
+    DATABASES = {}
+    DATABASES['default'] = dj_database_url.config()
 
 
 # Password validation
@@ -116,9 +133,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hant'
+# LANGUAGE_CODE = 'EN'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
 
@@ -164,10 +182,12 @@ CACHES = {
 }
 
 
+
+
 # Django-Q
 # Ref: https://django-q.readthedocs.org/en/latest/configure.html
-
-Q_CLUSTER = {
+if DEBUG:
+    Q_CLUSTER = {
     'name': 'DjangoORM',
     'timeout': 1200,
     'compress': False,
@@ -175,4 +195,20 @@ Q_CLUSTER = {
     'catch_up': False,
     'orm': 'default'
 }
+else:
+# example Tynd Disque connection
+  Q_CLUSTER = {
+    'name': 'TyndBroker',
+    'workers': 8,
+    'timeout': 30,
+    'retry': 1,
+    'bulk': 10,
+    'disque_nodes': os.environ['TYND_DISQUE_NODES'].split(','),
+    'disque_auth': os.environ['TYND_DISQUE_AUTH']
+}
+
+
+
+
+
 
