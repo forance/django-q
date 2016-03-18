@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-# from os.path import abspath, dirname, join
+from os.path import abspath, dirname, join
 
 # Build paths inside the project like this: join(BASE_DIR, ...)
 # BASE_DIR = dirname(dirname(abspath(__file__)))
@@ -25,8 +25,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'vqac7!7z)93t+b4afet#-tbkjji!=6=i+lqm%94i32t!*646ml'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+#DEBUG = True
+DEBUG = False
 
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django_q',
-    'fruit_shop',
+    'order_reminder',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -98,12 +98,24 @@ WSGI_APPLICATION = 'djangoq_demo.wsgi.application'
 # Parse database configuration from $DATABASE_URL
 
 if DEBUG:
+
     DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'reminder',
+        'USER': 'nicktang',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
+#     DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 else:
 
     import dj_database_url

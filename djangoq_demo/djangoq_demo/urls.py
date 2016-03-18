@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from fruit_shop.views import home
+from order_reminder.views import home
 
 urlpatterns = [
     url(r'^$', home, name='home'),

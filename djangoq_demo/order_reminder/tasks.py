@@ -1,10 +1,11 @@
 import datetime
-import xlrd
+from models import orders
+# import xlrd
 
 
 
-def order_fruit():
-
+def order():
+    all_orders = orders.objects.all()
 	# book = xlrd.open_workbook("orders.xlsx")
 	# orders = book.sheet_by_index(0)
 	# today = datetime.datetime.now().date()
@@ -18,8 +19,7 @@ def order_fruit():
 	# 		target_order = orders.cell_value(rowx=i, colx=0) 
 	# 		print "match", target_order
     
-    target_order="success"
     return (
         '{order} is due in 2 days later'
-        .format(order=target_order)
+        .format(order=all_orders)
     )

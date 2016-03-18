@@ -13,9 +13,9 @@ logger = logging.getLogger(__name__)
 
 # from django_q.tasks import schedule
 
-# schedule('fruit_shop.tasks.order_fruit',
+# schedule('order_reminder.tasks.order_fruit',
 #          2, -2,
-#          # hook='fruit_shop.hooks.send_result',
+#          # hook='order_reminder.hooks.send_result',
 #          schedule_type='I')
 
 
@@ -30,9 +30,9 @@ def home(request):
             return HttpResponseBadRequest('Invalid fruit request!')
         #Create async task
         task_id = async(
-            'fruit_shop.tasks.order_fruit',
+            'order_reminder.tasks.order',
             # fruit=fruit, num_fruit=num_fruit,
-            # hook='fruit_shop.hooks.send_result'
+            # hook='order_reminder.hooks.send_result'
         )
         messages.info(
             request,
@@ -45,7 +45,7 @@ def home(request):
 
     # Select finished orders
     complete_orders = Task.objects.all().filter(
-        func__exact='fruit_shop.tasks.order_fruit',
+        func__exact='order_reminder.tasks.order',
     )
     return render(request, 'index.html', {
             'queue_orders': queue_orders,
