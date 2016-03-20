@@ -1,2 +1,2 @@
-COPY order_reminder_orders(order_id,order_amount,customer,ship_date) 
-FROM '/Users/nicktang/Documents/2016Talk-Django-Q-master/orders.csv' DELIMITER ',' CSV HEADER;
+COPY order_reminder_Orders(order_id,ship_date,customer,currency,creater,order_amount,create_date) 
+FROM '/Users/nicktang/Documents/2016Talk-Django-Q-master/sc_simple.csv' DELIMITER ',' CSV HEADER;

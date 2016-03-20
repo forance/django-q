@@ -1,4 +1,4 @@
-import logging
+import logging, datetime
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render
@@ -24,22 +24,24 @@ def home(request):
     if request.method == 'POST':
         #Parse the form params
         try:
-            fruit = request.POST.get('fruit_type', '')
-            num_fruit = int(request.POST.get('num_fruit', '1'))
+            # fruit = request.POST.get('fruit_type', '')
+            duration = int(request.POST.get('duration', '1'))
         except ValueError:
             return HttpResponseBadRequest('Invalid fruit request!')
         #Create async task
         task_id = async(
             'order_reminder.tasks.order',
-            # fruit=fruit, num_fruit=num_fruit,
-            # hook='order_reminder.hooks.send_result'
+             duration,
+             hook='order_reminder.hooks.send_result'
         )
         messages.info(
             request,
-            'You ordered {fruit:s} x {num_fruit:d} (task: {task})'
-            .format(fruit=fruit, num_fruit=num_fruit, task=humanize(task_id))
+            ' trace order from past {duration:d} days (task: {task})'
+            .format(duration=duration, task=humanize(task_id))
         )
-
+     
+    today = datetime.datetime.now()
+    print today
     # Select orders in queue
     queue_orders = OrmQ.objects.all().order_by('lock')
 
@@ -48,6 +50,7 @@ def home(request):
         func__exact='order_reminder.tasks.order',
     )
     return render(request, 'index.html', {
+            'today':today,
             'queue_orders': queue_orders,
             'complete_orders': complete_orders
     })

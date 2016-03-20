@@ -9,9 +9,9 @@
             <div class="alert alert-{{ message.tags }}">{{ message }}</div>
         {% endfor %}
     {% endif %}
-    <h2>Fruit Shop</h2>
+    <h2>{{today}}  </h2> 
     <form class="form-inline" action="{% url 'home' %}" method="post">
-        <div class="form-group">
+  <!--       <div class="form-group">
             <label for="fruit_type">Fruit:</label>
             <select class="form-control" name="fruit_type">
                 <option>Apple</option>
@@ -20,13 +20,13 @@
                 <option>Mango</option>
                 <option>Strawberry</option>
             </select>
-        </div>
+        </div> -->
         <div class="form-group">
-            <label for="num_fruit">Quantity</label>
-            <input type="number" class="form-control" name="num_fruit"
-                   min="1" max="5" value="1">
+            <label for="duration">往前幾天的訂單</label>
+            <input type="number" class="form-control" name="duration"
+                   min="1" max="7" value="1">
         </div>
-        <button type="submit" class="btn btn-default">Send invitation</button>
+        <button type="submit" class="btn btn-default">Send</button>
         {% csrf_token %}
     </form>
 
@@ -70,7 +70,7 @@
             <tr>
                 <td>{{ task.name }}</td>
                 <td>{{ task.kwargs.fruit }}</td>
-                <td>{{ task.kwargs.num_fruit }}</td>
+                <td>{{ task.kwargs.duration }}</td>
                 <td>{{ task.result }}</td>
                 <td>{{ task.time_taken }}</td>
                 <td>{{ task.stopped|naturaltime }}</td>

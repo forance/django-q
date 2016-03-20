@@ -1,9 +1,9 @@
 from django import forms
 
-from .models import orders
+from .models import Orders
 
 
 class ContactForm(forms.ModelForm):
 	class Meta:
-		model = orders
+		model = Orders
 		fields = "__all__"
