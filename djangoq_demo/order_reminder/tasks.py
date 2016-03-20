@@ -16,9 +16,11 @@ def order(duration):
     start_date = end_date - datetime.timedelta(days=duration) # starting date minus duration
   
     # print target_year
-    match_orders = Orders.objects.filter(ship_date__gt=start_date,
-    	                                 ship_date__lt=end_date)
-    
+    match_orders = Orders.objects.filter(ship_date__gte=start_date,
+    	                                 ship_date__lte=end_date)
+    if match_orders is None:
+    	match_orders = 'No orders'
+
 
     return (
         '{order} were placed during {start} to {end}'

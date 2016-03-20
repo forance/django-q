@@ -25,23 +25,23 @@ def home(request):
         #Parse the form params
         try:
             # fruit = request.POST.get('fruit_type', '')
-            duration = int(request.POST.get('duration', '1'))
+            duration = int(request.POST.get('duration', '0'))
         except ValueError:
-            return HttpResponseBadRequest('Invalid fruit request!')
+            return HttpResponseBadRequest('Invalid request!')
         #Create async task
-        task_id = async(
-            'order_reminder.tasks.order',
-             duration,
-             hook='order_reminder.hooks.send_result'
-        )
-        messages.info(
-            request,
-            ' trace order from past {duration:d} days (task: {task})'
-            .format(duration=duration, task=humanize(task_id))
-        )
+        if duration != 0:
+            task_id = async(
+                'order_reminder.tasks.order',
+                 duration,
+                 # hook='order_reminder.hooks.send_result'
+            )
+            messages.info(
+                request,
+                ' trace order from past {duration:d} days (task: {task})'
+                .format(duration=duration, task=humanize(task_id))
+            )
      
     today = datetime.datetime.now()
-    print today
     # Select orders in queue
     queue_orders = OrmQ.objects.all().order_by('lock')
 

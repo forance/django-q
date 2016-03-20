@@ -24,7 +24,7 @@
         <div class="form-group">
             <label for="duration">往前幾天的訂單</label>
             <input type="number" class="form-control" name="duration"
-                   min="1" max="7" value="1">
+                   min="0" max="30" value="0">
         </div>
         <button type="submit" class="btn btn-default">Send</button>
         {% csrf_token %}
@@ -58,8 +58,6 @@
         <thead>
         <tr>
             <th>Order Name</th>
-            <th>Fruit</th>
-            <th>Quantity</th>
             <th>Result</th>
             <th>Time taken</th>
             <th>Complete on</th>
@@ -69,8 +67,6 @@
         {% for task in complete_orders %}
             <tr>
                 <td>{{ task.name }}</td>
-                <td>{{ task.kwargs.fruit }}</td>
-                <td>{{ task.kwargs.duration }}</td>
                 <td>{{ task.result }}</td>
                 <td>{{ task.time_taken }}</td>
                 <td>{{ task.stopped|naturaltime }}</td>
