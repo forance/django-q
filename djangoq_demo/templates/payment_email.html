@@ -1,0 +1,16 @@
+<h3>請確認以下客人 是否有付款</h3>
+
+<h3><strong>Customers placed orders from {{start_date}} to {{end_date}} but no down payment yet </strong></h3>
+
+<h4><strong> Please take a look and follow up </strong></h4>
+
+
+{% for i in context %}
+<p>{{ forloop.counter }}. {{i}}</p>
+ <br>
+{% endfor %}
+<br>
+<br>
+<p>Cheers</p>
+<br>
+<h3><p style="color:#808080">*** Please use 'Reply all' to reply this message ***</p></h3>

@@ -24,12 +24,45 @@
         <div class="form-group">
             <label for="duration">往前幾天的訂單</label>
             <input type="number" class="form-control" name="duration"
-                   min="0" max="30" value="0">
+                   min="0" max="180" value="0">
         </div>
         <button type="submit" class="btn btn-default">Send</button>
         {% csrf_token %}
     </form>
+ 
+     <br>
 
+    <form class="form-inline" action="{% url 'home' %}" method="post">
+
+        <div class="checkbox">
+           <label><input type="checkbox" name="update" value="True"> Update orders from QH DB</label>
+        </div>
+        <button type="submit" class="btn btn-default">Send</button>
+        {% csrf_token %}
+    </form>
+    
+    <br>
+
+    <form class="form-inline" action="{% url 'home' %}" method="post">
+  <!--       <div class="form-group">
+            <label for="fruit_type">Fruit:</label>
+            <select class="form-control" name="fruit_type">
+                <option>Apple</option>
+                <option>Banana</option>
+                <option>Watermelon</option>
+                <option>Mango</option>
+                <option>Strawberry</option>
+            </select>
+        </div> -->
+        <div class="form-group">
+            <label for="payment">Payment reminder</label>
+            <input type="number" class="form-control" name="payment"
+                   min="0" max="60" value="0">
+        </div>
+        <button type="submit" class="btn btn-default">Send</button>
+        {% csrf_token %}
+    </form>
+ 
 
     <h2>Queued Tasks</h2>
     <table class="table table-striped">
@@ -48,6 +81,52 @@
                 <td>{{ task.func }}</td>
                 <td>{{ task.task.kwargs }}</td>
                 <td>{{ task.task.started|naturaltime }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+     <h2>Payment Reminder History</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Update</th>
+            <th>Result</th>
+            <th>Time taken</th>
+            <th>Complete on</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in complete_payment %}
+            <tr>
+                <td>{{ task.name }}</td>
+                <td>{{ task.result }}</td>
+                <td>{{ task.time_taken }}</td>
+                <td>{{ task.stopped|naturaltime }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+     <h2>Update History</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Update</th>
+            <th>Result</th>
+            <th>Time taken</th>
+            <th>Complete on</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in complete_update %}
+            <tr>
+                <td>{{ task.name }}</td>
+                <td>{{ task.result }}</td>
+                <td>{{ task.time_taken }}</td>
+                <td>{{ task.stopped|naturaltime }}</td>
             </tr>
         {% endfor %}
         </tbody>

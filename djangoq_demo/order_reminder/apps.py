@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class FruitShopConfig(AppConfig):
+class OrderReminderConfig(AppConfig):
     name = 'order_reminder'
